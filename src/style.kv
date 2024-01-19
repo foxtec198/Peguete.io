@@ -1,0 +1,113 @@
+# ROSA
+#fe2077
+#fc1f7c
+# AZUL
+#504cff
+#1f75fc
+
+<Cad>
+    MDFloatLayout:
+        padding: dp(30)
+        spacing: '10dp'
+        orientation: 'vertical'
+        md_bg_color: 'black'
+        FitImage:
+            size_hint: None, None
+            size: 150, 150
+            source: 'src/anim2.png'
+            pos_hint: {'center_x': .5,'center_y': .8}
+        MDLabel:
+            pos_hint: {'center_x': .5,'center_y': .6}
+            text: "Cadastro"
+            halign: 'center'
+        MDTextField:
+            pos_hint: {'center_x': .5,'center_y': .5}
+            size_hint: .8, None
+            hint_text: 'Nome Completo'
+            icon_left: 'pen'
+        MDTextField:
+            pos_hint: {'center_x': .5,'center_y': .4}
+            size_hint: .8, None
+            hint_text: 'Usuário'
+            icon_left: 'account-star'
+        MDTextField:
+            pos_hint: {'center_x': .5,'center_y': .3}
+            size_hint: .8, None
+            hint_text: 'Senha'
+            icon_left: 'key-variant'
+            password: True
+        MDIconButton:
+            size_hint: None, None
+            theme_text_color: 'Hint'
+            pos_hint: {'center_x': .85,'center_y': .3}
+            icon: 'eye'
+        MDFlatButton:
+            pos_hint: {'center_x': .3,'center_y': .25}
+            text: 'Ja tem conta? Faça Login'
+        MDFillRoundFlatIconButton:
+            icon: 'google'
+            md_bg_color: '#fe2077'
+            pos_hint: {'center_x': .5,'center_y': .15}
+            text: 'Criar conta com o Google'
+            size_hint: .6, None
+        MDFillRoundFlatIconButton:
+            md_bg_color: '#504cff'
+            size_hint: .6, None
+            icon: 'package-variant-plus'
+            pos_hint: {'center_x': .5,'center_y': .08}
+            text: 'Criar conta'
+            
+<Login>
+    name: 'login'
+    MDFloatLayout:
+        padding: dp(30)
+        spacing: '10dp'
+        orientation: 'vertical'
+        md_bg_color: 'black'
+        FitImage:
+            size_hint: None, None
+            size: 150, 150
+            source: 'src/anim2.png'
+            pos_hint: {'center_x': .5,'center_y': .8}
+        MDLabel:
+            pos_hint: {'center_x': .5,'center_y': .6}
+            text: "Cadastro"
+            halign: 'center'
+        MDTextField:
+            pos_hint: {'center_x': .5,'center_y': .5}
+            size_hint: .8, None
+            hint_text: 'Nome Completo'
+            icon_left: 'pen'
+        MDTextField:
+            pos_hint: {'center_x': .5,'center_y': .4}
+            size_hint: .8, None
+            hint_text: 'Usuário'
+            icon_left: 'account-star'
+        MDTextField:
+            pos_hint: {'center_x': .5,'center_y': .3}
+            size_hint: .8, None
+            hint_text: 'Senha'
+            icon_left: 'key-variant'
+            password: True
+        MDIconButton:
+            size_hint: None, None
+            theme_text_color: 'Hint'
+            pos_hint: {'center_x': .85,'center_y': .3}
+            icon: 'eye'
+        MDFlatButton:
+            pos_hint: {'center_x': .3,'center_y': .25}
+            text: 'Ja tem conta? Faça Login'
+        MDFillRoundFlatIconButton:
+            icon: 'google'
+            md_bg_color: '#fe2077'
+            pos_hint: {'center_x': .5,'center_y': .15}
+            text: 'Criar conta com o Google'
+            size_hint: .6, None
+        MDFillRoundFlatIconButton:
+            md_bg_color: '#504cff'
+            size_hint: .6, None
+            icon: 'package-variant-plus'
+            pos_hint: {'center_x': .5,'center_y': .08}
+            text: 'Criar conta'
+<Main>
+    name: 'main'
