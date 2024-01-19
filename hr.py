@@ -4,6 +4,8 @@ from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
 
 class Cad(MDScreen): ...
+class Login(MDScreen): ...
+class Main(MDScreen): ...
 
 class HotReload(MDApp):
     KV_FILES = ['src/style.kv']
@@ -12,7 +14,9 @@ class HotReload(MDApp):
         Builder.load_file('src/style.kv')
         self.theme_cls.theme_style = 'Dark'
         sm = MDScreenManager()
-        sm.add_widget(Cad())
+        # sm.add_widget(Cad())
+        # sm.add_widget(Main())
+        # sm.add_widget(Login())
         return sm
 
 if __name__=='__main__':
