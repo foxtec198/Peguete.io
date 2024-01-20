@@ -15,8 +15,8 @@ class HotReload(MDApp):
         Builder.load_file('src/style.kv')
         self.theme_cls.theme_style = 'Dark'
         sm = MDScreenManager()
-        sm.add_widget(Cad())
         sm.add_widget(vEmail())
+        sm.add_widget(Cad())
         sm.add_widget(Login())
         sm.add_widget(Main())
         return sm
