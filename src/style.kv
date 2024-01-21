@@ -51,6 +51,8 @@
             icon: 'package-variant-plus'
             pos_hint: {'center_x': .5,'center_y': .15}
             text: 'Criar conta'
+            on_release: 
+                app.cad(emailCad.text, pwdCad.text, nomeCompleto.text)
         MDFillRoundFlatIconButton:
             icon: 'login'
             md_bg_color: '#fe2077'
@@ -101,6 +103,8 @@
             icon: 'login'
             pos_hint: {'center_x': .5,'center_y': .15}
             text: 'Entrar'
+            on_release:
+                app.login(emailLogin.text, pwdLogin.text)
             
         MDFillRoundFlatIconButton:
             icon: 'package-variant-plus'
@@ -117,22 +121,25 @@
             source: 'src/mailSend.png'
             size_hint: None, None
             size: 200, 200
-            pos_hint: {'center_x': .5,'center_y': .7 }
+            pos_hint: {'center_x': .5,'center_y': .8 }
         MDLabel:
             halign: 'center'
             text: "Emviamos para seu email \numa validação, por favor \nconfirme seu email"
-            pos_hint: {'center_x': .5 ,'center_y': .5 }
+            pos_hint: {'center_x': .5 ,'center_y': .6 }
         MDTextField:
+            id: codigoE
             halign: 'center'
             hint_text: 'Código de Verificação'
             icon_left: 'numeric'
             input_type: 'number'
-            pos_hint: {'center_x': .5 ,'center_y': .4 }
+            pos_hint: {'center_x': .5 ,'center_y': .35 }
             size_hint: .8, None
         MDFillRoundFlatIconButton:
             icon: 'check-decagram'
             text: 'Verificar Email'
             pos_hint: {'center_x': .5 ,'center_y': .2 }
             size_hint: None, .06
+            on_release:
+                app.verifyCodigo(codigoE.text)
 <Main>
     name: 'main'

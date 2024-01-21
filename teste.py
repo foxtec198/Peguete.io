@@ -1,2 +1,0 @@
-import pyrebase as fb
-
