@@ -9,6 +9,7 @@ from random import randint
 import email.message
 import smtplib
 import pyrebase as fb
+from kivy.core.window import Window
 
 class Cad(MDScreen): ...
 class Main(MDScreen): ...
@@ -78,6 +79,12 @@ class FrontEnd(MDApp):
         sm.add_widget(Main())
         sm.add_widget(vEmail())
         return sm
+        
+    def _on_keyboard(self, key):
+        if key == 271 or key == 13:
+            if self.root.current == 'cad': self.cad(self.idsCad.emailCad.text, self.idsCad.pwdCad.text, self.idsCad.nomeCompleto.text)
+            elif self.root.current == 'login': self.login(self.idsLogin.emailLogin.text, self.idsLogin.pwdLogin.text)
+        print("Keyboard pressed! {}".format(key))
 
     def changeScreen(self, c: str, t = 'right'):
         self.root.transition.direction = t
@@ -85,17 +92,20 @@ class FrontEnd(MDApp):
 
     def on_start(self):
         self.verify = self.back.conferLogin()
-
+        self.idsLogin = self.root.get_screen('login').ids
+        self.idsCad = self.root.get_screen('cad').ids
         if self.verify: self.root.current = 'main'
         elif not self.verify: self.root.current = 'cad'
         else: toast('Erro desconhecido!')
 
+        Window.bind(on_keyboard=self._on_keyboard)
+
     def login(self, uid, pwd):
-        # try:
-        self.back.login(uid, pwd)
-        self.back.sendMail(uid)
-        self.root.current = 'vEmail'
-        # except: toast('Verifique as credenciais!')
+        try:
+            self.back.login(uid, pwd)
+            self.back.sendMail(uid)
+            self.root.current = 'vEmail'
+        except: toast('Verifique as credenciais!')
 
     def cad(self, uid, pwd, name): 
         try:
@@ -108,6 +118,8 @@ class FrontEnd(MDApp):
         if int(cdg) == int(self.back.codigoMail):
             self.root.current = 'main'
         else: toast('Código Incorreto')
-        
+    
+    
+    
 if __name__ == '__main__':
     FrontEnd().run()
