@@ -15,52 +15,6 @@ class Main(MDScreen): ...
 class Login(MDScreen): ...
 class vEmail(MDScreen): ...
 
-class FrontEnd(MDApp):
-    def build(self):
-        self.back = BackEnd()
-        Builder.load_file('src/style.kv')
-        self.title = 'Peguete.io'
-        self.icon = 'src/anim2.png'
-        th = self.theme_cls
-        th.theme_style = 'Dark'
-        th.primary_palette = 'Indigo'
-        sm = MDScreenManager()
-        sm.add_widget(Cad())
-        sm.add_widget(Login())
-        sm.add_widget(Main())
-        sm.add_widget(vEmail())
-        return sm
-
-    def changeScreen(self, c: str, t = 'right'):
-        self.root.transition.direction = t
-        self.root.current = c
-
-    def on_start(self):
-        self.verify = self.back.conferLogin()
-
-        if self.verify: self.root.current = 'main'
-        elif not self.verify: self.root.current = 'cad'
-        else: toast('Erro desconhecido!')
-
-    def login(self, uid, pwd):
-        try:
-            b.login(uid, pwd)
-            b.sendMail(uid)
-            self.root.current = 'vEmail'
-        except: toast('Verifique as credenciais!')
-
-    def cad(self, uid, pwd, name): 
-        try:
-            b.cadastro(uid, pwd, name)
-            b.sendMail(uid)
-            self.root.current = 'vEmail'
-        except: toast('Verifique as credenciais!')
-
-    def verifyCodigo(self, cdg):
-        if int(cdg) == int(b.codigoMail):
-            self.root.current = 'main'
-        else: toast('Código Incorreto')
-
 class BackEnd:
     def __init__(self):
         self.conn = connect('src/pegueteio.db')
@@ -108,7 +62,52 @@ class BackEnd:
         s.starttls()
         s.login(mail, pwd)
         s.sendmail(mail, [msg['To']], msg.as_string().encode('utf-8'))
+
+class FrontEnd(MDApp):
+    def build(self):
+        self.back = BackEnd()
+        Builder.load_file('src/style.kv')
+        self.title = 'Peguete.io'
+        self.icon = 'src/anim2.png'
+        th = self.theme_cls
+        th.theme_style = 'Dark'
+        th.primary_palette = 'Indigo'
+        sm = MDScreenManager()
+        sm.add_widget(Cad())
+        sm.add_widget(Login())
+        sm.add_widget(Main())
+        sm.add_widget(vEmail())
+        return sm
+
+    def changeScreen(self, c: str, t = 'right'):
+        self.root.transition.direction = t
+        self.root.current = c
+
+    def on_start(self):
+        self.verify = self.back.conferLogin()
+
+        if self.verify: self.root.current = 'main'
+        elif not self.verify: self.root.current = 'cad'
+        else: toast('Erro desconhecido!')
+
+    def login(self, uid, pwd):
+        # try:
+        self.back.login(uid, pwd)
+        self.back.sendMail(uid)
+        self.root.current = 'vEmail'
+        # except: toast('Verifique as credenciais!')
+
+    def cad(self, uid, pwd, name): 
+        try:
+            self.back.cadastro(uid, pwd, name)
+            self.back.sendMail(uid)
+            self.root.current = 'vEmail'
+        except: toast('Verifique as credenciais!')
+
+    def verifyCodigo(self, cdg):
+        if int(cdg) == int(self.back.codigoMail):
+            self.root.current = 'main'
+        else: toast('Código Incorreto')
         
 if __name__ == '__main__':
-    b = BackEnd()
     FrontEnd().run()
