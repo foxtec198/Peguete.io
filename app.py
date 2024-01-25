@@ -1,15 +1,20 @@
+try: from kivymd.toast import toast
+except: dialog = True
+
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager 
 from kivy.lang import Builder
-from kivymd.toast import toast
 from sqlite3 import connect
 from random import randint
-import email.message
-import smtplib
-import pyrebase as fb
-from kivy.core.window import Window
+import email.message, smtplib, requests, json
+
+dialog = False
+
+def raiseError(rq):
+    try: return rq['error']['message']
+    except KeyError: return rq
 
 class Cad(MDScreen): ...
 class Main(MDScreen): ...
@@ -20,12 +25,7 @@ class BackEnd:
     def __init__(self):
         self.conn = connect('src/pegueteio.db')
         self.c = self.conn.cursor()
-        self.config = {"apiKey": "AIzaSyB6s6PXZD_K30qfLiMwQn7q7eVWHgQK4OU",
-            "authDomain": "pegueteio-2e0a4.firebaseapp.com",
-            "databaseURL": "https://databaseName.firebaseio.com",
-            "storageBucket": "pegueteio-2e0a4.appspot.com",}
-        self.firebase = fb.initialize_app(self.config)
-        self.auth = self.firebase.auth()
+        self.api = "AIzaSyB6s6PXZD_K30qfLiMwQn7q7eVWHgQK4OU"
     
     def conferLogin(self):
         self.c.execute('CREATE TABLE IF NOT EXISTS Confer(Verify BOOLEAN)')
@@ -34,12 +34,20 @@ class BackEnd:
         return self.conferVerify
     
     def login(self, mail: str, pwd:str):
-        self.user = self.auth.sign_in_with_email_and_password(mail, pwd)
-
+        link = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={self.api}"
+        self.user = raiseError(requests.post(link, data=json.dumps({"email": mail, "password": pwd, "returnSecureToken": True})).json())
+        
     def cadastro(self, mail: str, pwd:str, name = ''):
-        self.user = self.auth.create_user_with_email_and_password(mail, pwd)
-        self.auth.update_profile(self.user['idToken'], name)
+        link = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key={self.api}"
+        self.user = raiseError(requests.post(link, data=json.dumps({"email": mail, "password": pwd, "returnSecureToken": True})).json())
+        try: self.updateUser(self.user['idToken'], name)
+        except: ...
 
+    def updateUser(self, id, display_name = None, photo_url = None, delete_attribute = None):
+        link = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={self.api}"
+        data = json.dumps({"idToken": id, "displayName": display_name, "photoURL": photo_url, "deleteAttribute": delete_attribute, "returnSecureToken": True})
+        self.user = requests.post(link, data=data)
+    
     def sendMail(self, mailTo):
         self.codigoMail = randint(100000, 999999)
         corpo = f'''
@@ -79,12 +87,6 @@ class FrontEnd(MDApp):
         sm.add_widget(Main())
         sm.add_widget(vEmail())
         return sm
-        
-    def _on_keyboard(self, key):
-        if key == 271 or key == 13:
-            if self.root.current == 'cad': self.cad(self.idsCad.emailCad.text, self.idsCad.pwdCad.text, self.idsCad.nomeCompleto.text)
-            elif self.root.current == 'login': self.login(self.idsLogin.emailLogin.text, self.idsLogin.pwdLogin.text)
-        print("Keyboard pressed! {}".format(key))
 
     def changeScreen(self, c: str, t = 'right'):
         self.root.transition.direction = t
@@ -98,8 +100,6 @@ class FrontEnd(MDApp):
         elif not self.verify: self.root.current = 'cad'
         else: toast('Erro desconhecido!')
 
-        Window.bind(on_keyboard=self._on_keyboard)
-
     def login(self, uid, pwd):
         try:
             self.back.login(uid, pwd)
@@ -108,11 +108,11 @@ class FrontEnd(MDApp):
         except: toast('Verifique as credenciais!')
 
     def cad(self, uid, pwd, name): 
-        try:
-            self.back.cadastro(uid, pwd, name)
-            self.back.sendMail(uid)
-            self.root.current = 'vEmail'
-        except: toast('Verifique as credenciais!')
+        # try:
+        self.back.cadastro(uid, pwd, name)
+        self.back.sendMail(uid)
+        self.root.current = 'vEmail'
+        # except: toast('Verifique as credenciais!')
 
     def verifyCodigo(self, cdg):
         if int(cdg) == int(self.back.codigoMail):
