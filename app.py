@@ -19,7 +19,6 @@ class Cad(MDScreen): ...
 class Main(MDScreen): ...
 class Login(MDScreen): ...
 class vEmail(MDScreen): ...
-
 class BackEnd:
     def __init__(self):
         self.conn = connect('src/pegueteio.db')
@@ -55,8 +54,8 @@ class BackEnd:
             <p>Segue seu código para verificar seu email </p>
             <p><b>{self.codigoMail} <b></p>
             <p>Se você não solicitou a verificação deste endereço, ignore este emai.</p>
-            <p>Att pegueteio - tecnobreve.pegueteio@gmail.com</p>
-        '''
+            <p>Att pegueteio - tecnobreve.pegueteio@gmail.com</p> '''
+
         mail = 'tecnobreve.pegueteio@gmail.com'
         pwd = 'qpyb hdxx hiou wifp'
         msg = email.message.Message() 
@@ -97,24 +96,38 @@ class FrontEnd(MDApp):
         self.idsCad = self.root.get_screen('cad').ids
         if self.verify: self.root.current = 'main'
         elif not self.verify: self.root.current = 'cad'
-        else: toast('Erro desconhecido!')
 
     def login(self, uid, pwd):
-        try:
-            self.back.login(uid, pwd)
-            self.back.sendMail(uid)
-            self.root.current = 'vEmail'
-        except: toast('Verifique as credenciais!')
+        if uid != '' and pwd != '':
+            try:
+                self.back.login(uid, pwd)
+                print(self.back.user)
+                if self.back.user == 'INVALID_LOGIN_CREDENTIALS': toast('Credenciais Invalidas')
+                elif self.back.user == 'USER_DISABLED': toast('Usuario Desabilitado!')
+                else:
+                    try:
+                        self.nome = self.back.user['displayName']
+                        self.root.current = 'vEmail'
+                        self.back.sendMail(uid)
+                    except: toast(f'{self.back.user}')
+            except: toast(f'{self.back.user}')
+        else: toast('Preencha os dados acima!')
 
     def cad(self, uid, pwd, name): 
-        # try:
-        self.back.cadastro(uid, pwd, name)
-        self.back.sendMail(uid)
-        self.root.current = 'vEmail'
-        # except: toast('Verifique as credenciais!')
+        if uid != '' and pwd != '':
+            try:
+                self.back.cadastro(uid, pwd, name)
+                if self.back.user == 'EMAIL_EXISTS': toast('Email ja cadastrado, faça login!')
+                else: 
+                    try:
+                        self.back.user['kind']
+                        self.login(uid, pwd)
+                    except: toast(f'{self.back.user}')
+            except: toast(f'Credenciais Invalidas!')
+        else: toast('Preencha os dados acima!')
 
-    def verifyCodigo(self, cdg):
-        if int(cdg) == int(self.back.codigoMail):
+    def verifyCodigo(self, cdg: int):
+        if cdg == self.back.codigoMail:
             self.root.current = 'main'
         else: toast('Código Incorreto')
     
