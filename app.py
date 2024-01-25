@@ -8,18 +8,18 @@ from kivy.lang import Builder
 from sqlite3 import connect
 from random import randint
 import email.message, smtplib, requests, json
+import ssl
+
+ssl._create_default_https_context = ssl._create_stdlib_context
 
 dialog = False
-
-def raiseError(rq):
-    try: return rq['error']['message']
-    except KeyError: return rq
+link = 'https://pegueteio-2e0a4-default-rtdb.firebaseio.com/users/.json'
 
 class Cad(MDScreen): ...
 class Main(MDScreen): ...
 class Login(MDScreen): ...
 class vEmail(MDScreen): ...
-class BackEnd:
+class BackEnd():
     def __init__(self):
         self.conn = connect('src/pegueteio.db')
         self.c = self.conn.cursor()
@@ -32,14 +32,19 @@ class BackEnd:
         return self.conferVerify
     
     def login(self, mail: str, pwd:str):
-        link = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={self.api}"
-        self.user = raiseError(requests.post(link, data=json.dumps({"email": mail, "password": pwd, "returnSecureToken": True})).json())
-        
-    def cadastro(self, mail: str, pwd:str, name = ''):
-        link = f"https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key={self.api}"
-        self.user = raiseError(requests.post(link, data=json.dumps({"email": mail, "password": pwd, "returnSecureToken": True})).json())
-        try: self.updateUser(self.user['idToken'], name)
-        except: ...
+        link = 'https://pegueteio-2e0a4-default-rtdb.firebaseio.com/users/.json'
+        users = requests.get(link).json()
+        for id in users:
+            user = users[id]
+            self.mail = user['email']
+            self.pwd = user['password']
+            if mail == self.mail:
+                if pwd == self.pwd:
+                    return 'Sucesso'
+                else: return 'Senha Incorreta'
+            else: return 'Email não cadastrado'
+
+    def cadastro(self, mail: str, pwd:str, name = ''): ...
 
     def updateUser(self, id, display_name = None, photo_url = None, delete_attribute = None):
         link = f"https://identitytoolkit.googleapis.com/v1/accounts:update?key={self.api}"
@@ -98,19 +103,14 @@ class FrontEnd(MDApp):
         elif not self.verify: self.root.current = 'cad'
 
     def login(self, uid, pwd):
-        # if uid != '' and pwd != '':
-            # try:
-            #     if self.back.user == 'INVALID_LOGIN_CREDENTIALS': toast('Credenciais Invalidas')
-            #     elif self.back.user == 'USER_DISABLED': toast('Usuario Desabilitado!')
-            #     else:
-            #         try:
-        self.back.login(uid, pwd)
-        self.nome = self.back.user['displayName']
-        self.root.current = 'vEmail'
-        self.back.sendMail(uid)
-        #             except: toast(f'Erro nas credencias')
-        #     except: toast(f'Erro na requisição!')
-        # else: toast('Preencha os dados acima!')
+        if uid != '' and pwd !='':
+            r = self.back.login(uid, pwd)
+            if r == 'Sucesso':
+                self.back.sendMail(self.back.mail)
+                self.root.current = 'vEmail'
+                toast('Logado com Sucesso')
+            else:
+                toast(r)
 
     def cad(self, uid, pwd, name): 
         if uid != '' and pwd != '':
