@@ -106,7 +106,6 @@ class FrontEnd(MDApp):
         if uid != '' and pwd !='':
             r = self.back.login(uid, pwd)
             if r == 'Sucesso':
-                self.back.sendMail(self.back.mail)
                 self.root.current = 'vEmail'
                 toast('Logado com Sucesso')
             else:
