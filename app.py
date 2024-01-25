@@ -98,19 +98,19 @@ class FrontEnd(MDApp):
         elif not self.verify: self.root.current = 'cad'
 
     def login(self, uid, pwd):
-        if uid != '' and pwd != '':
-            try:
-                self.back.login(uid, pwd)
-                if self.back.user == 'INVALID_LOGIN_CREDENTIALS': toast('Credenciais Invalidas')
-                elif self.back.user == 'USER_DISABLED': toast('Usuario Desabilitado!')
-                else:
-                    try:
-                        self.nome = self.back.user['displayName']
-                        self.root.current = 'vEmail'
-                        self.back.sendMail(uid)
-                    except: toast(f'Erro nas credencias')
-            except: toast(f'Erro na requisição!')
-        else: toast('Preencha os dados acima!')
+        # if uid != '' and pwd != '':
+            # try:
+            #     self.back.login(uid, pwd)
+            #     if self.back.user == 'INVALID_LOGIN_CREDENTIALS': toast('Credenciais Invalidas')
+            #     elif self.back.user == 'USER_DISABLED': toast('Usuario Desabilitado!')
+            #     else:
+            #         try:
+        self.nome = self.back.user['displayName']
+        self.root.current = 'vEmail'
+        self.back.sendMail(uid)
+        #             except: toast(f'Erro nas credencias')
+        #     except: toast(f'Erro na requisição!')
+        # else: toast('Preencha os dados acima!')
 
     def cad(self, uid, pwd, name): 
         if uid != '' and pwd != '':
