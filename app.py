@@ -100,11 +100,11 @@ class FrontEnd(MDApp):
     def login(self, uid, pwd):
         # if uid != '' and pwd != '':
             # try:
-            #     self.back.login(uid, pwd)
             #     if self.back.user == 'INVALID_LOGIN_CREDENTIALS': toast('Credenciais Invalidas')
             #     elif self.back.user == 'USER_DISABLED': toast('Usuario Desabilitado!')
             #     else:
             #         try:
+        self.back.login(uid, pwd)
         self.nome = self.back.user['displayName']
         self.root.current = 'vEmail'
         self.back.sendMail(uid)
