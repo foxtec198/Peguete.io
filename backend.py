@@ -1,6 +1,6 @@
 from sqlite3 import connect
-import plotly.io as pio
-import plotly_express as px
+from plotly_express import pie
+from plotly.io import templates
 
 class BackEnd():
     def __init__(self) -> None:
@@ -89,11 +89,11 @@ class BackEnd():
             for i in self.dados:
                 df.append([i[1].capitalize(), 1])
 
-            pio.templates.default = 'plotly_dark'
-            pie = px.pie(df, values=1, names=0)
-            pie.update_traces(textfont_size=20)
-            pie.update_legends(font_size=25)
-            pie.write_image('src/plt.png')
+            templates.default = 'plotly_dark'
+            pieXl = pie(df, values=1, names=0)
+            pieXl.update_traces(textfont_size=20)
+            pieXl.update_legends(font_size=25)
+            pieXl.write_image('src/plt.png')
 
 
 if __name__ == '__main__':
