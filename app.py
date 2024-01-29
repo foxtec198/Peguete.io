@@ -22,7 +22,7 @@ class FrontEnd(MDApp):
         self.back = BackEnd()
         Builder.load_file('src/style.kv')
         self.title = 'Peguete.io'
-        self.icon = 'src/anim2.png'
+        self.icon = 'src/logo.png'
         th = self.theme_cls
         th.theme_style = 'Dark'
         th.primary_palette = 'Indigo'

@@ -78,9 +78,9 @@ class BackEnd():
             self.status = i[1]
             self.data = i[2]
             self.obs = i[3]
-            
-    def criarGrafico(self): ...
+
+    def criarGrafico(self): 
+        ...
 
 if __name__ == '__main__':
     b = BackEnd()
-    # print(b.addLove())
