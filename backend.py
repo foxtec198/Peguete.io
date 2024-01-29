@@ -1,5 +1,4 @@
 from sqlite3 import connect
-import pandas as pd
 import plotly.io as pio
 import plotly_express as px
 
@@ -91,8 +90,7 @@ class BackEnd():
                 df.append([i[1].capitalize(), 1])
 
             pio.templates.default = 'plotly_dark'
-            df= pd.DataFrame(df, columns=['Status','Quant'])
-            pie = px.pie(df, values='Quant', names='Status')
+            pie = px.pie(df, values=1, names=0)
             pie.update_traces(textfont_size=20)
             pie.update_legends(font_size=25)
             pie.write_image('src/plt.png')
