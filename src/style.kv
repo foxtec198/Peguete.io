@@ -128,16 +128,16 @@
                     source: 'src/anim1.png'
                     size_hint: None, None
                     pos_hint: {'center_x': 0.2,'center_y': 0.85}
-                    size: 100, 100
+                    size: dp(100), dp(100)
                 MDCard:
                     pos_hint: {'center_x': 0.5,'center_y': 0.65}
-                    size_hint_max: None, 80
+                    size_hint_max: None, dp(80)
                     size_hint: .8, None
                     MDBoxLayout:
                         padding: '20dp'
                         spacing: '20dp'
                         MDIcon:
-                            size_hint_max: 20, None
+                            size_hint_max: dp(20), None
                             icon: 'list-status'
                             halign:'center'
                             pos_hint: {'center_y': 0.5}
@@ -154,7 +154,7 @@
                                 text: 'Olá {nome}, seu status atual é {status}'
                 MDCard:
                     pos_hint: {'center_x': 0.5,'center_y': 0.3}
-                    size_hint_max: None, 280
+                    size_hint_max: None, dp(280)
                     size_hint: .8, 1
 
         MDBottomNavigationItem:
