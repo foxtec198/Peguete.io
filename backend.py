@@ -1,4 +1,7 @@
 from sqlite3 import connect
+import pandas as pd
+import plotly.io as pio
+import plotly_express as px
 
 class BackEnd():
     def __init__(self) -> None:
@@ -70,7 +73,7 @@ class BackEnd():
         self.conn.commit()
     
     def getDados(self):
-        self. dados = self.c.execute('select nome, status, data, obs from CASOS').fetchall()
+        self. dados = self.c.execute('select nome, status, data, obs, id from CASOS order by Id DESC').fetchall()
 
     def organizarDados(self, dados):
         for i in dados:
@@ -78,9 +81,25 @@ class BackEnd():
             self.status = i[1]
             self.data = i[2]
             self.obs = i[3]
+            break
 
     def criarGrafico(self): 
-        ...
+        self.getDados()
+        if self.dados != None:
+            df = []
+            for i in self.dados:
+                df.append([i[1].capitalize(), 1])
+
+            pio.templates.default = 'plotly_dark'
+            df= pd.DataFrame(df, columns=['Status','Quant'])
+            pie = px.pie(df, values='Quant', names='Status')
+            pie.update_traces(textfont_size=20)
+            pie.update_legends(font_size=25)
+            pie.write_image('src/plt.png')
+
 
 if __name__ == '__main__':
     b = BackEnd()
+    b.criarGrafico()
+    # for i in range(10):
+    #     b.addLove('teste','decepcionado','10/10/1010')

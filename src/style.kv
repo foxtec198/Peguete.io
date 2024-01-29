@@ -10,7 +10,7 @@
     MDFloatLayout:
         FitImage:
             size_hint: None, None
-            size: 150, 150
+            size: dp(150), dp(150)
             source: 'src/logo.png'
             pos_hint: {'center_x': .5,'center_y': .8}
         MDLabel:
@@ -131,6 +131,7 @@
                 MDCard:
                     pos_hint: {'center_x': 0.5,'center_y': 0.65}
                     size_hint_max: None, dp(100)
+                    size_hint_min: dp(250), dp(100)
                     size_hint: .8, 1
                     MDBoxLayout:
                         padding: '20dp'
@@ -151,11 +152,18 @@
                                 halign: 'left'
                                 font_style: 'Overline'
                                 text: 'Olá {nome}, seu status atual é {status}'
-                MDCard:
+                MDFloatLayout:
                     pos_hint: {'center_x': 0.5,'center_y': 0.3}
                     size_hint_max: None, dp(280)
+                    size_hint_min: dp(250), dp(250)
                     size_hint: .8, 1
-
+                    FitImage:
+                        id: chartImage
+                        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+                        source: 'src/chart.png'
+                        size_hint: None, None
+                        size: '250dp', '210dp'
+                        radius: dp(20)
         MDBottomNavigationItem:
             name: 'config'
             text: 'Home'
@@ -170,7 +178,6 @@
             text: 'Config'
             icon: 'cog'
 
-            MDLabel:
-                text: 'CONFIG...'
-                halign: 'center'
+            MDBoxLayout:
+                
 # ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Subtitle1', 'Subtitle2', 'Body1', 'Body2', 'Button', 'Caption', 'Overline', 'Icon']

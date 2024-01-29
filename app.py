@@ -44,6 +44,15 @@ class FrontEnd(MDApp):
             self.root.current = 'main'
         elif not self.verify: self.root.current = 'cad'
         if self.root.current == 'main': self.atualizarStatus()
+        try: 
+            self.back.criarGrafico()
+            self.back.organizarDados(self.back.dados)
+            self.atualizarStatus(self.back.status)
+            self.idsMain.chartImage.source = 'src/plt.png'
+            self.idsMain.chartImage.size = ('310dp', '210dp')
+            
+        except: ...
+
 
     def atualizarStatus(self, status = None):
         self.idsMain.lblStatus.text = f'Olá {self.back.nome}, seu status atual é {status}'
