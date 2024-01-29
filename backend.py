@@ -6,6 +6,7 @@ class BackEnd():
         self.c = self.conn.cursor()
         self.c.execute('CREATE TABLE IF NOT EXISTS USERS(Id INTEGER PRIMARY KEY AUTOINCREMENT, NOME VARCHAR(100), EMAIL VARCHAR(100), PWD VARCHAR(100))')
         self.c.execute('CREATE TABLE IF NOT EXISTS CONFER(Id INTEGER PRIMARY KEY AUTOINCREMENT, LG BOOL)')
+        self.c.execute('CREATE TABLE IF NOT EXISTS CASOS(Id INTEGER PRIMARY KEY AUTOINCREMENT, NOME TEXT, STATUS TEXT, DATA DATE, OBS TEXT)')
 
     def conferLogin(self):
         db = self.c.execute('select LG from CONFER ORDER BY Id DESC').fetchone()
@@ -54,6 +55,32 @@ class BackEnd():
 
     def cons(self):
         return self.c.execute('select * from CONFER').fetchall()
-        
+
+    def lastLogin(self):
+        users = self.c.execute('SELECT EMAIL, PWD, NOME FROM USERS ORDER BY Id DESC').fetchone()
+        if users != None:
+            self.email = users[0]
+            self.pwd = users[1]
+            self.nomeCompleto = users[2]
+            self.nome = self.nomeCompleto.split()
+            self.nome = self.nome[0]
+
+    def addLove(self, nome: str, status, data: str, obs = None):
+        self.c.execute(f'INSERT INTO CASOS(NOME, STATUS, DATA, OBS) VALUES("{nome}","{status}","{data}","{obs}")')
+        self.conn.commit()
+    
+    def getDados(self):
+        self. dados = self.c.execute('select nome, status, data, obs from CASOS').fetchall()
+
+    def organizarDados(self, dados):
+        for i in dados:
+            self.nomeLove = i[0]
+            self.status = i[1]
+            self.data = i[2]
+            self.obs = i[3]
+            
+    def criarGrafico(self): ...
+
 if __name__ == '__main__':
     b = BackEnd()
+    # print(b.addLove())

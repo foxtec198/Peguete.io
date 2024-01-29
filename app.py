@@ -38,23 +38,29 @@ class FrontEnd(MDApp):
 
     def on_start(self):
         self.verify = self.back.conferLogin()
-        if self.verify: self.root.current = 'main'
+        self.idsMain = self.root.get_screen('main').ids
+        if self.verify: 
+            self.back.lastLogin()
+            self.root.current = 'main'
         elif not self.verify: self.root.current = 'cad'
+        if self.root.current == 'main': self.atualizarStatus()
+
+    def atualizarStatus(self, status = None):
+        self.idsMain.lblStatus.text = f'Olá {self.back.nome}, seu status atual é {status}'
 
     def login(self, uid, pwd):
         res = self.back.login(uid, pwd)
         toast(res)
         if res == 'Sucesso':
+            self.atualizarStatus()
             self.root.current = 'main'
 
     def cad(self, uid, pwd, name): 
         res = self.back.cadastro(uid, pwd, name)
         toast(res)
         if res == 'Cadastrado com Sucesso':
+            self.atualizarStatus()
             self.root.current = 'main'
-            
 
-    
-    
 if __name__ == '__main__':
     FrontEnd().run()

@@ -116,3 +116,62 @@
                 app.changeScreen('cad', 'left')
 <Main>
     name: 'main'
+    MDBottomNavigation:
+        MDBottomNavigationItem:
+            name: 'dash'
+            text: 'Status'
+            icon: 'view-dashboard'
+            # badge_icon: "numeric-1"
+            MDFloatLayout:
+                spacing: '20dp'
+                FitImage:
+                    source: 'src/anim1.png'
+                    size_hint: None, None
+                    pos_hint: {'center_x': 0.2,'center_y': 0.85}
+                    size: 100, 100
+                MDCard:
+                    pos_hint: {'center_x': 0.5,'center_y': 0.65}
+                    size_hint_max: None, 80
+                    size_hint: .8, None
+                    MDBoxLayout:
+                        padding: '20dp'
+                        spacing: '20dp'
+                        MDIcon:
+                            size_hint_max: 20, None
+                            icon: 'list-status'
+                            halign:'center'
+                            pos_hint: {'center_y': 0.5}
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            MDLabel:
+                                font_style: 'H6'
+                                halign: 'left'
+                                text: 'Status'
+                            MDLabel:
+                                id: lblStatus
+                                halign: 'left'
+                                font_style: 'Overline'
+                                text: 'Olá {nome}, seu status atual é {status}'
+                MDCard:
+                    pos_hint: {'center_x': 0.5,'center_y': 0.3}
+                    size_hint_max: None, 280
+                    size_hint: .8, 1
+
+        MDBottomNavigationItem:
+            name: 'config'
+            text: 'Home'
+            icon: 'home'
+            active: True
+            MDLabel:
+                text: 'HOME...'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'cof'
+            text: 'Config'
+            icon: 'cog'
+
+            MDLabel:
+                text: 'CONFIG...'
+                halign: 'center'
+# ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Subtitle1', 'Subtitle2', 'Body1', 'Body2', 'Button', 'Caption', 'Overline', 'Icon']
