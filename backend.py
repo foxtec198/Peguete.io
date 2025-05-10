@@ -10,7 +10,7 @@ class BackEnd():
         self.c.execute('CREATE TABLE IF NOT EXISTS CONFER(Id INTEGER PRIMARY KEY AUTOINCREMENT, LG BOOL)')
         self.c.execute('CREATE TABLE IF NOT EXISTS CASOS(Id INTEGER PRIMARY KEY AUTOINCREMENT, NOME TEXT, STATUS TEXT, DATA DATE, OBS TEXT)')
 
-    def conferLogin(self):
+    def confer_login(self):
         db = self.c.execute('select LG from CONFER ORDER BY Id DESC').fetchone()
         try:
             if db[0]: return True
