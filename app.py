@@ -1,4 +1,5 @@
-from kivymd.app import MDApp
+# from kivymd.app import MDApp
+from kivymd.tools.hotreload.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager 
 from kivy.lang import Builder
@@ -31,7 +32,7 @@ class FrontEnd(MDApp):
         return sm
 
     def change_screen(self, c: str, t = 'right'):
-        self.root.transition.direction = t
+        # self.root.transition.direction = t
         self.root.current = c
 
     def login(self, email, pwd):
