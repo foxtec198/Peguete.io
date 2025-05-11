@@ -1,13 +1,13 @@
 [app]
 
 # (str) Title of your application
-title = Peguete.io
+title = My Application
 
 # (str) Package name
-package.name = pegueteio
+package.name = myapp
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = pg.io
+package.domain = org.test
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,kivymd
+requirements = python3,kivy
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -45,10 +45,9 @@ requirements = python3,kivy,kivymd
 
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
-presplash.filename = /src/splash.png
 
 # (str) Icon of the application
-icon.filename = /src/logo.png
+#icon.filename = %(source.dir)s/data/icon.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
