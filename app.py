@@ -32,7 +32,7 @@ class FrontEnd(MDApp):
         return sm
 
     def change_screen(self, c: str, t = 'right'):
-        # self.root.transition.direction = t
+        self.root.transition.direction = t
         self.root.current = c
 
     def login(self, email, pwd):
