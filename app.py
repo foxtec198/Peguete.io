@@ -1,5 +1,4 @@
-# from kivymd.app import MDApp
-from kivymd.tools.hotreload.app import MDApp
+from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager 
 from kivy.lang import Builder
