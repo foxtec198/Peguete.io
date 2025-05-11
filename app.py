@@ -35,8 +35,8 @@ class FrontEnd(MDApp):
         self.root.current = c
 
     def login(self, email, pwd):
+        toast("Logado")
         self.change_screen('main')
-        print(email, pwd)
 
 if __name__ == '__main__':
     FrontEnd().run()
