@@ -10,7 +10,6 @@ __pycache__/
 .Python
 *.exe
 build/
-.buildozer/
 develop-eggs/
 dist/
 downloads/
