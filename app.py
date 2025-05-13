@@ -4,9 +4,7 @@ from kivymd.uix.screenmanager import MDScreenManager
 from kivy.lang import Builder
 from kivy.clock import Clock
 
-from models.functions import Functions
-
-func = Functions()
+from models.functions import *
 
 # Toast
 dialog = False
@@ -49,7 +47,7 @@ class FrontEnd(MDApp):
         self.sm.current = c
 
     def login(self, email, pwd):
-        res = func.login(email, pwd)
+        res = login(email, pwd)
         self.change_screen('main') if res[0] else toast(res[1]) 
 
 if __name__ == '__main__':
