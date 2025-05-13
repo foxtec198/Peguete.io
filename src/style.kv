@@ -124,7 +124,7 @@
             # badge_icon: "numeric-1"
             MDFloatLayout:
                 MDCard:
-                    pos_hint: {'center_x': 0.5,'center_y': .85}
+                    pos_hint: {'center_x': 0.5,'center_y': .9}
                     size_hint_max: None, dp(100)
                     size_hint_min: dp(250), dp(100)
                     size_hint: .8, 1
@@ -137,6 +137,7 @@
                             halign:'center'
                             pos_hint: {'center_y': 0.5}
                         MDBoxLayout:
+                            id: teste
                             orientation: 'vertical'
                             MDLabel:
                                 font_style: 'H6'

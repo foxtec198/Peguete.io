@@ -2,6 +2,11 @@ from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager 
 from kivy.lang import Builder
+from kivy.clock import Clock
+
+from models.functions import Functions
+
+func = Functions()
 
 # Toast
 dialog = False
@@ -15,7 +20,16 @@ if dialog:
 
 class Cad(MDScreen): ...
 class Login(MDScreen): ...
-class Main(MDScreen): ...
+class Main(MDScreen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._on_enter_trig = trig = Clock.create_trigger(self._my_on_enter)
+        self.bind(on_enter=trig)
+        
+    def _my_on_enter(self, *largs):
+        newText = self.ids.lblStatus.text.replace('{NOME}', func.nome)
+        self.ids.lblStatus.text = newText
+
 class FrontEnd(MDApp):
     def build(self):
         Builder.load_file('src/style.kv')
@@ -24,19 +38,19 @@ class FrontEnd(MDApp):
         th = self.theme_cls
         th.theme_style = 'Dark'
         th.primary_palette = 'Indigo'
-        sm = MDScreenManager()
-        sm.add_widget(Login())
-        sm.add_widget(Cad())
-        sm.add_widget(Main())
-        return sm
+        self.sm = MDScreenManager()
+        self.sm.add_widget(Login())
+        self.sm.add_widget(Cad())
+        self.sm.add_widget(Main())
+        return self.sm
 
     def change_screen(self, c: str, t = 'right'):
-        self.root.transition.direction = t
-        self.root.current = c
+        self.sm.transition.direction = t
+        self.sm.current = c
 
     def login(self, email, pwd):
-        toast("Logado")
-        self.change_screen('main')
+        res = func.login(email, pwd)
+        self.change_screen('main') if res[0] else toast(res[1]) 
 
 if __name__ == '__main__':
     FrontEnd().run()

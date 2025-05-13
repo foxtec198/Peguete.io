@@ -1,5 +1,6 @@
 kivy
-kivymd
+# kivymd
+https://github.com/kivymd/KivyMD/archive/master.zip
 buildozer
 Cython==0.29.33
 watchdog

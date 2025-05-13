@@ -1,8 +1,8 @@
 from sqlite3 import connect
-from plotly_express import pie
-from plotly.io import templates
+# from plotly_express import pie
+# from plotly.io import templates
 
-class BackEnd():
+class Functions():
     def __init__(self) -> None:
         self.conn = connect('src/pegueteio.db')
         self.c = self.conn.cursor()
@@ -31,12 +31,12 @@ class BackEnd():
                             if db == None: self.c.execute('INSERT INTO CONFER(LG) VALUES (True)')
                             elif db != None: self.c.execute('UPDATE CONFER SET LG = True')
                             self.conn.commit()
-                            resposta = 'Sucesso'
-                        else: resposta = 'Senha Incorreta'
-                    else: resposta = 'Email não econtrado'
+                            resposta = [True, 'Sucesso']
+                        else: resposta = [False, 'Senha Incorreta']
+                    else: resposta = [False, 'Email não econtrado']
             try: return resposta
-            except: return 'Nenhum cadastro no banco de dados'
-        else: return 'Valores vazios'
+            except: return [False, 'Nenhum cadastro no banco de dados']
+        else: return [False, 'Valores vazios']
 
     def cadastro(self, email, pwd, nome = ''):
         if email != '' and pwd != '':
@@ -64,8 +64,7 @@ class BackEnd():
             self.email = users[0]
             self.pwd = users[1]
             self.nomeCompleto = users[2]
-            self.nome = self.nomeCompleto.split()
-            self.nome = self.nome[0]
+            self.nome = self.nomeCompleto.split()[0]
 
     def addLove(self, nome: str, status, data: str, obs = None):
         self.c.execute(f'INSERT INTO CASOS(NOME, STATUS, DATA, OBS) VALUES("{nome}","{status}","{data}","{obs}")')
@@ -82,22 +81,23 @@ class BackEnd():
             self.obs = i[3]
             break
 
-    def criarGrafico(self): 
-        self.getDados()
-        if self.dados != None:
-            df = []
-            for i in self.dados:
-                df.append([i[1].capitalize(), 1])
+    # def criarGrafico(self): 
+    #     self.getDados()
+    #     if self.dados != None:
+    #         df = []
+    #         for i in self.dados:
+    #             df.append([i[1].capitalize(), 1])
 
-            templates.default = 'plotly_dark'
-            pieXl = pie(df, values=1, names=0)
-            pieXl.update_traces(textfont_size=20)
-            pieXl.update_legends(font_size=25)
-            pieXl.write_image('src/plt.png')
+    #         templates.default = 'plotly_dark'
+    #         pieXl = pie(df, values=1, names=0)
+    #         pieXl.update_traces(textfont_size=20)
+    #         pieXl.update_legends(font_size=25)
+    #         pieXl.write_image('src/plt.png')
 
 
 if __name__ == '__main__':
-    b = BackEnd()
-    b.criarGrafico()
+    b = Functions()
+    a = b.login('foxtec198@gmail.com', '84584608')
+    print(a)
     # for i in range(10):
     #     b.addLove('teste','decepcionado','10/10/1010')
