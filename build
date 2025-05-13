@@ -1,2 +1,2 @@
 . venv/bin/activate
-buildozer -v android debug run logcat | grep python
+buildozer -v android debug deploy run logcat | grep python
