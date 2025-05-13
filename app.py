@@ -3,7 +3,6 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.screenmanager import MDScreenManager 
 from kivy.lang import Builder
 from kivy.clock import Clock
-
 from models.functions import *
 
 # Toast
@@ -25,9 +24,8 @@ class Main(MDScreen):
         self.bind(on_enter=trig)
         
     def _my_on_enter(self, *largs):
-        newText = self.ids.lblStatus.text.replace('{NOME}', func.nome)
+        newText = self.ids.lblStatus.text.replace('{NOME}', query("select name from config")[0])
         self.ids.lblStatus.text = newText
-
 class FrontEnd(MDApp):
     def build(self):
         Builder.load_file('src/style.kv')
@@ -40,6 +38,7 @@ class FrontEnd(MDApp):
         self.sm.add_widget(Login())
         self.sm.add_widget(Cad())
         self.sm.add_widget(Main())
+        query("create table if not exists config(name varchar, email varchar)")
         return self.sm
 
     def change_screen(self, c: str, t = 'right'):
@@ -47,6 +46,7 @@ class FrontEnd(MDApp):
         self.sm.current = c
 
     def login(self, email, pwd):
+        global nome
         res = login(email, pwd)
         self.change_screen('main') if res[0] else toast(res[1]) 
 
