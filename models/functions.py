@@ -1,5 +1,6 @@
 from sqlite3 import connect
 from requests import get, post
+import requests as rq
 
 # conn = connect('pegueteio.bd')
 conn = connect(':memory:')
@@ -63,11 +64,35 @@ def singup(email, pwd, name):
             if name:
                 payload = {"email": email, "password": pwd, "displayName": name}
                 response = post(change_opt(opt_singup), json=payload)
-                if response.status_code == 200:
-                    return [True, response.json()]
+                if response.status_code == 200: 
+                    data = response.json()
+                    query("insert into config(name, email) values('%s', '%s')", (data['displayName'], data['email']))
+                    send_verify_email(data['idToken'])
+                    return data
+                return [False, response.json()['error']['message']]
             return [False, 'Nome obrigatório!']
         return [False, 'Senha obrigatória!']
     return [False, 'Email obrigatório!']
 
+def send_verify_email(token):
+    payload = {
+        "requestType": "VERIFY_EMAIL",
+        "idToken":token
+    }
+    res = post(change_opt("sendOobCode"), json=payload)
+    if res.status_code == 200: return res.json()
+    return [None, res.status]
+
+def get_verify_email(token):
+    payload = {
+        "requestType": "VERIFY_EMAIL",
+        "idToken":token
+    }
+    res = post(change_opt("update"), json=payload)
+    if res.status_code == 200: return res.json()
+    return [None, res.status]
+
 if __name__ == '__main__':
-    res = login('foxtec198@gmail.com','84584608')
+    res = singup('teste@teste.com','84584608', 'Teste')
+
+    print(res[1])

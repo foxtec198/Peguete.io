@@ -46,9 +46,15 @@ class FrontEnd(MDApp):
         self.sm.current = c
 
     def login(self, email, pwd):
-        global nome
         res = login(email, pwd)
         self.change_screen('main') if res[0] else toast(res[1]) 
+
+    def singup(self, email, pwd, nome):
+        res = singup(email, pwd, nome)
+        if res[0]:
+            self.change_screen('login') 
+            toast("Realize login!")
+        else: toast(res[1])
 
 if __name__ == '__main__':
     FrontEnd().run()
